@@ -613,9 +613,9 @@ public class ExcelUtil {
                     }
                 }
                 // 防止科学计数进入
-                if (String.valueOf(cell.getNumericCellValue()).toLowerCase().contains(E)) {
-                    throw new BizException(ErrorCode.SYS_EXCEPTION.getCode(), "excel数据类型错误，请将数字转文本类型！！");
-                }
+//                if (String.valueOf(cell.getNumericCellValue()).toLowerCase().contains(E)) {
+//                    throw new BizException(ErrorCode.SYS_EXCEPTION.getCode(), "excel数据类型错误，请将数字转文本类型！！");
+//                }
                 if ((int) cell.getNumericCellValue() != cell.getNumericCellValue()) {
                     // double 类型
                     cellValue = cell.getNumericCellValue();

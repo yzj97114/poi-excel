@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Student {
     @Excel(orderNum = 0, titleName = "id", empty = true)
-    private Long id;
+    private String id;
     @Excel(orderNum = 1, titleName = "姓名", empty = true)
     private String name;
     @Excel(orderNum = 2, titleName="性别", empty = true)
