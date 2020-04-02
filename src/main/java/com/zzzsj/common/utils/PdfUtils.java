@@ -21,9 +21,6 @@ public class PdfUtils {
     public static void pdfout(Map<String,Object> o, HttpServletResponse response) {
         // 模板路径
         String templatePath = "/Users/yyyzj/Desktop/aaa.pdf";
-        // 生成的新文件路径
-        String newPDFPath = "/Users/yyyzj/Desktop/bbb.pdf";
-
         PdfReader reader;
         //FileOutputStream out;
         ByteArrayOutputStream bos;
