@@ -45,9 +45,9 @@ public class PdfUtils {
             //form.addSubstitutionFont(bf);
             for(String key : datemap.keySet()){
                 String value = datemap.get(key);
-                if (key.equals("ball")) {
-                    form.setField(key,value);
-                }
+//                if (key.equals("ball")) {
+//                    form.setField(key,value);
+//                }
                 form.setField(key,value);
             }
             //图片类的内容处理
@@ -93,8 +93,7 @@ public class PdfUtils {
         map.put("creatdate","今天");
         map.put("weather","晴");
         map.put("sports","踢球");
-        map.put("ball","On");
-
+        map.put("ball","Off");
         Map<String,String> map2 = new HashMap();
         map2.put("img","/Users/yyyzj/Pictures/376189334869.jpg");
 
