@@ -1,22 +1,28 @@
 package com.zzzsj.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.*;
 import com.zzzsj.common.annotation.Excel;
 import lombok.Data;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 /**
  * @author 79282
  */
 @Data
+
+@ColumnWidth(25)
 public class Student {
-    @Excel(orderNum = 0, titleName = "id", empty = true)
+    @ExcelProperty("id")
     private String id;
-    @Excel(orderNum = 1, titleName = "姓名", empty = true)
+    @ExcelProperty("姓名")
     private String name;
-    @Excel(orderNum = 2, titleName="性别", empty = true)
+    @ExcelProperty("性别")
     private String gender;
-    @Excel(orderNum = 3, titleName = "地址", empty = true)
+    @ExcelProperty("地址")
     private String address;
-    @Excel(orderNum = 4, titleName = "手机号码", empty = true)
+    @ExcelProperty("手机号码")
     private String phone;
 
 }
