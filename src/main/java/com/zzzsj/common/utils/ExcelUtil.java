@@ -5,6 +5,7 @@ package com.zzzsj.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.zzzsj.common.annotation.Excel;
+import com.zzzsj.common.annotation.NumberAnnotation;
 import com.zzzsj.common.enums.ErrorCode;
 import com.zzzsj.common.exception.BizException;
 import com.zzzsj.common.exception.SystemException;
@@ -695,6 +696,27 @@ public class ExcelUtil {
         // 判断文件是否是excel文件
         if (!fileName.endsWith(XLS) && !fileName.endsWith(XLS_X)) {
             throw new BizException(ErrorCode.SYS_EXCEPTION.getCode(), fileName + "不是excel文件");
+        }
+    }
+
+    public static <T> void testFieldAnnotation(Class<?> clazz, T t) throws Exception {
+        //获取所有私有属性
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            //设置为可以访问
+            field.setAccessible(true);
+            NumberAnnotation numberAnnotation = null;
+            if (field.isAnnotationPresent(NumberAnnotation.class)) {
+                numberAnnotation = field.getAnnotation(NumberAnnotation.class);
+            }
+
+            if (numberAnnotation != null) {
+                //获取属性值
+                BigDecimal amt = (BigDecimal) field.get(t);
+                amt = amt.setScale(numberAnnotation.numberPattern(), BigDecimal.ROUND_HALF_UP);
+                //给属性重新设置值
+                field.set(t, amt);
+            }
         }
     }
 }
