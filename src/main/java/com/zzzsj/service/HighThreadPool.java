@@ -1,6 +1,7 @@
 package com.zzzsj.service;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.zzzsj.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.util.concurrent.*;
 public class HighThreadPool implements DisposableBean {
 
     private static final int THREADS = 20;
-    private static final int MAX_THREADS = 20;
+    private static final int MAX_THREADS = 50;
     private static final int ALIVETIME = 0;
     private ExecutorService executorService;
 
@@ -26,9 +27,19 @@ public class HighThreadPool implements DisposableBean {
     public void init() {
         log.info("线程池init start=>");
         executorService = new ThreadPoolExecutor(THREADS,
-                MAX_THREADS, ALIVETIME, TimeUnit.SECONDS, new LinkedBlockingDeque<>(),
+                MAX_THREADS, ALIVETIME, TimeUnit.SECONDS, new LinkedBlockingDeque<>(20),
                 new ThreadFactoryBuilder().setNameFormat("highThread-pool").build());
         log.info("线程池init end=>");
+    }
+
+    public void submit(Runnable task) {
+        try {
+            executorService.submit(task);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            throw e;
+        }
+
     }
 
     @Override
