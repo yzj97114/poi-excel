@@ -1,10 +1,13 @@
 package com.zzzsj.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import com.zzzsj.entity.FillData;
+import com.zzzsj.entity.PowerInfo;
 import com.zzzsj.entity.Student;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -89,5 +92,69 @@ public class EasyExcelController {
         student.setPhone("12345678");
         students.add(student);
         return students;
+    }
+
+    @GetMapping("1234")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = URLEncoder.encode("测试", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        String template = "/Users/yyyzj/Desktop/demo.xlsx";
+
+        //工作薄对象
+        ExcelWriter workBook = EasyExcel.write(response.getOutputStream()).withTemplate(template).build();
+
+        //工作区对象
+        WriteSheet sheet = EasyExcel.writerSheet().build();
+
+
+        FillData fillData = new FillData();
+        fillData.setId("1");
+        fillData.setGetElectricityDataTime("20230402");
+        fillData.setStartTime("20230402");
+        fillData.setEndTime("20230403");
+        fillData.setCompanyNmae("yyyyzj");
+        fillData.setBindNumbers("1");
+        fillData.setApplicationTime("12321");
+
+
+        List<PowerInfo> powerInfos = new ArrayList<>();
+        PowerInfo powerInfo = new PowerInfo();
+        powerInfo.setTotalPower("123456789");
+        powerInfo.setPricePower("2222222");
+        powerInfo.setPeakPower("333333");
+        powerInfo.setLowPower("44444");
+        powerInfo.setHighPower("555555");
+        powerInfo.setDate("20230413");
+        powerInfos.add(powerInfo);
+
+        powerInfo = new PowerInfo();
+        powerInfo.setTotalPower("5");
+        powerInfo.setPricePower("4");
+        powerInfo.setPeakPower("3");
+        powerInfo.setLowPower("2");
+        powerInfo.setHighPower("1");
+        powerInfo.setDate("20230414");
+        powerInfos.add(powerInfo);
+
+        powerInfo = new PowerInfo();
+        powerInfo.setTotalPower("888888");//填统计的值
+        powerInfo.setPricePower("888888");//填统计的值
+        powerInfo.setPeakPower("888888");//填统计的值
+        powerInfo.setLowPower("888888");//填统计的值
+        powerInfo.setHighPower("888888");//填统计的值
+        powerInfo.setDate("统计");
+        powerInfos.add(powerInfo);
+
+
+
+        //使用工作薄对象填充数据
+        workBook.fill(fillData,sheet);
+        workBook.fill(powerInfos,sheet);
+        workBook.finish();
+
     }
 }
